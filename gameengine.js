@@ -21,7 +21,7 @@ GameEngine.prototype.init = function (ctx) {
     this.surfaceWidth = this.ctx.canvas.width;
     this.surfaceHeight = this.ctx.canvas.height;
     this.timer = new Timer();
-    this.startInput();
+    //this.startInput();
     console.log('game initialized');
 }
 
@@ -33,7 +33,7 @@ GameEngine.prototype.start = function () {
         requestAnimFrame(gameLoop, that.ctx.canvas);
     })();
 }
-
+/*
 GameEngine.prototype.startInput = function () {
     console.log('Starting input');
 
@@ -96,7 +96,7 @@ GameEngine.prototype.startInput = function () {
 
     console.log('Input started');
 }
-
+*/
 GameEngine.prototype.addEntity = function (entity) {
     console.log('added entity');
     this.entities.push(entity);
