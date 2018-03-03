@@ -16,8 +16,10 @@ function Knight(game, spritesheets) {
     this.animation = new Animation(spritesheets[IDLE], 174, 128, 7, 0.14, 7, true, 1, false);
 	this.state = IDLE_RIGHT;
     this.speed = 0;
+	this.ySpeed = 0 ;
 	this.isJumping = false;
     this.ctx = game.ctx;
+	this.pressed = false;
     Entity.call(this, game, 300, 150);
 }
 
@@ -30,17 +32,23 @@ Knight.prototype.update = function () {
 	this.ctx.canvas.addEventListener("keydown", function (e) {
 		if (e.code === "ArrowRight" && knight.state !== WALK_RIGHT && 
 		    (knight.state !== JUMP_RIGHT && knight.state !== JUMP_LEFT)) {
+			knight.pressed = true;
 			knight.setState(WALK_RIGHT);
-		} else if (e.code === "ArrowLeft" && knight.state !== WALK_LEFT && 
+		} 
+		if (e.code === "ArrowLeft" && knight.state !== WALK_LEFT && 
 		           (knight.state !== JUMP_RIGHT && knight.state !== JUMP_LEFT)) {
+			knight.pressed = true;
 			knight.setState(WALK_LEFT);
 		}
-		if (e.code === "ArrowUp" && knight.state === WALK_RIGHT && knight.state !== JUMP) {
-			knight.setState(JUMP_RIGHT);
+		if (e.code === "ArrowUp") {
+			if((knight.state === WALK_RIGHT || knight.state === IDLE_RIGHT) && 
+			   knight.state !== JUMP_RIGHT) {
+				knight.setState(JUMP_RIGHT);
+			} else if ((knight.state === WALK_LEFT || knight.state === IDLE_LEFT) && 
+			           knight.state !== JUMP_LEFT) {
+				knight.setState(JUMP_LEFT);
+			}	
 		}
-		if (e.code === "ArrowUp" && knight.state === WALK_LEFT && knight.state !== JUMP) {
-			knight.setState(JUMP_LEFT);
-		}	
     }, false);
 	
 	this.ctx.canvas.addEventListener("keyup", function (e) {
@@ -48,18 +56,39 @@ Knight.prototype.update = function () {
 		    knight.state !== IDLE_RIGHT && 
 			knight.state !== JUMP_RIGHT && 
 			knight.state !== JUMP_LEFT) {
+			knight.pressed = false;
 			knight.setState(IDLE_RIGHT);
 		}
 		if (e.code === "ArrowLeft" && 
 		    knight.state !== IDLE_LEFT && 
 			knight.state !== JUMP_RIGHT && 
 			knight.state !== JUMP_LEFT) {
+			knight.pressed = false;	
 			knight.setState(IDLE_LEFT);
 		}
     }, false);
 	
-	if (this.state === WALK_RIGHT || this.state === WALK_LEFT) {
-		this.x += this.game.clockTick * this.speed;
+	this.x += this.game.clockTick * this.speed;
+
+	if (this.state === JUMP_RIGHT || this.state === JUMP_LEFT) {
+		this.y -= this.game.clockTick * this.ySpeed;
+		this.ySpeed -= 50 * this.game.clockTick;
+	}
+	if (this.y > 150 && (this.state === JUMP_LEFT || this.state === JUMP_RIGHT)) {
+		if (this.state === JUMP_LEFT) {
+			if (this.pressed)
+				this.setState(WALK_LEFT);
+			else
+				this.setState(IDLE_LEFT);
+		} else {
+			if (this.pressed)
+				this.setState(WALK_RIGHT);
+			else
+				this.setState(IDLE_RIGHT);
+		}
+		this.y = 150;
+		this.isJumping = false;
+		this.ySpeed = 0;
 	}
    
     if (this.x > 800) this.x = -230;
@@ -99,12 +128,12 @@ Knight.prototype.setState = function(state) {
 		this.animation = new Animation(this.spritesheets[ATTACK], 174, 128, 7, 0.14, 7, true, 1, true);
 	} else if (state === JUMP_RIGHT) {
 		this.isJumping = true;
-		this.speed = 50;
+		this.ySpeed = 50;
 		this.state = JUMP_RIGHT;
 		this.animation = new Animation(this.spritesheets[JUMP], 174, 128, 7, 0.25, 7, true, 1, false);
 	} else if (state === JUMP_LEFT) {
 		this.isJumping = true;
-		this.speed = 50;
+		this.ySpeed = 50;
 		this.state = JUMP_LEFT;
 		this.animation = new Animation(this.spritesheets[JUMP], 174, 128, 7, 0.25, 7, true, 1, true);
 	}
