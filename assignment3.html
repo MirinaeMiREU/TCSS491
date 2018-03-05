@@ -2,12 +2,13 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Assignment 2</title>
-    <script type="text/javascript" src="./a2/gameengine.js"></script>
+    <title>Assignment 3</title>
+	<script type="text/javascript" src="http://24.16.255.56:8888/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="./a3/gameengine.js"></script>
     <script type="text/javascript" src="./assetmanager.js"></script>
-	<script type="text/javascript" src="./a2/entity.js"></script>
-	<script type="text/javascript" src="./a2/square.js"></script>
-    <script type="text/javascript" src="./a2/main.js"></script>
+	<script type="text/javascript" src="./a3/entity.js"></script>
+	<script type="text/javascript" src="./a3/square.js"></script>
+    <script type="text/javascript" src="./a3/main.js"></script>
 </head>
 <body>
     <canvas id="gameWorld" tabindex="1" width="800" height="600" style="border: 1px solid brown; background: lightskyblue"></canvas>
@@ -17,6 +18,10 @@
 	<button id="pause">Pause</button>
 	<br>
 	<button id="step">Step</button>
+	<br>
+	<button id="load">Load</button>
+	<br>
+	<button id="save">Save</button>
 	<p>
 		I tried to make a multi-level game of life, but it turned out more like rain clouds.
 	</p>
@@ -25,6 +30,10 @@
 	</p>
 	<p>
 		I don't know why this setup does what it does, but it looked pretty cool, so I kept it.
+	</p>
+	<p>
+		Save button saves the level of each cell to the server as a 2D list and <br>
+		the load button loads that list and sets the levels of the cells according to the loaded data.
 	</p>
 </body>
 </html>
