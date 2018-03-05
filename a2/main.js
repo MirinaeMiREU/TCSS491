@@ -25,10 +25,10 @@ AM.downloadAll(function () {
 	for (var i = 0; i < 62; i++) {
 		for (var j = 0; j < 82; j++) {
 			if (i === 0 || i === 61) {
-				squares[i][j].alive = false;
+				squares[i][j].level = 0;
 			}
 			if (j === 0 || j === 81) {
-				squares[i][j].alive = false;
+				squares[i][j].level = 0;
 			}
 		}
 	}
@@ -56,7 +56,6 @@ AM.downloadAll(function () {
 	}
 
 	gameEngine.start();
-//	gameEngine.pause();
 	
     console.log("All Done!");
 });

@@ -14,7 +14,7 @@ function GameEngine() {
     this.ctx = null;
     this.surfaceWidth = null;
     this.surfaceHeight = null;
-	this.isPaused = false;
+	this.isPaused = true;
 	this.ticked = false;
 	this.isStepping = true;
 	this.play = null;
@@ -44,12 +44,12 @@ GameEngine.prototype.start = function () {
 	})();
 }
 
-GameEngine.prototype.pause = function() {
+GameEngine.prototype.pauseGame = function() {
 	console.log("pausing game");
 	this.isPaused = true;
 }
 
-GameEngine.prototype.resume = function() {
+GameEngine.prototype.resumeGame = function() {
 	console.log("resuming game");
 	this.isPaused = false;
 }
@@ -74,11 +74,11 @@ GameEngine.prototype.startInput = function () {
     // event listeners are added here
 
 	this.play.addEventListener("click", function (e) {
-		that.isPaused = false;
+		that.resumeGame();
     }, false);
 	
 	this.pause.addEventListener("click", function (e) {
-		that.isPaused = true;
+		that.pauseGame();
     }, false);
 	
 	this.step.addEventListener("click", function (e) {
@@ -121,12 +121,12 @@ GameEngine.prototype.loop = function () {
 	}
 	if (!this.isPaused) {
 		this.clockTick = this.timer.tick();
-		if (this.timer.gameTime % 0.1 > 0.05 && !this.ticked) {
+		if (this.timer.gameTime % 0.3 > 0.15 && !this.ticked) {
 			this.update();
 			this.draw();
 			this.ticked = true;
 			//console.log("tick");
-		} else if (this.timer.gameTime % 0.1 <= 0.05 && this.ticked){
+		} else if (this.timer.gameTime % 0.3 <= 0.15 && this.ticked){
 			this.ticked = false;
 			//console.log("tock");
 		}
